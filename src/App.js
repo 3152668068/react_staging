@@ -57,7 +57,7 @@ class App extends Component {
   //删除选中的内容
   Alldelete = () => {
     const { todos } = this.state;
-    // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+    // filter()方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
     const newTo = todos.filter((todo) => {
       return todo.done !== true
     })
