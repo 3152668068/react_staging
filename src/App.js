@@ -1,79 +1,28 @@
-import React, { Component } from 'react'
-import Header from './component/header/index'
-import Footer from './component/footer/index'
-import List from './component/list/index'
-import { nanoid } from 'nanoid'
+//创建外壳组件APP
+import React,{Component} from 'react'
+import axios from 'axios'
+import './App.css'
 
-import './App.css';
-class App extends Component {
-  state = {
-    todos: [
-      { id: nanoid(), name: '吃饭', done: true },
-      { id: nanoid(), name: '睡觉', done: true },
-      { id: nanoid(), name: '打豆豆', done: true }
-    ]
-  }
+class App extends Component{
 
-  addTodo = (value) => {
-    const { todos } = this.state;
-    let p = { id: nanoid(), name: value, done: false }
-    this.setState({ todos: [p, ...todos] });
+    click = () =>{
+        //3000-->到5000会有跨域问题 开启一个代理，解决跨域的问题
+        //相当于在3000的机器上放置一个代理，发送一个请求之后，会先判断3000这个服务上是否有这个服务，如果有直接就返回，如果没有就去5000去找，
+        //经过这个代理转发到5000这个机器上。
+        axios.get('http://localhost:3000/students').then(
+            result => {console.log("这个成功",result.data)},
+            error => {console.log("失败",error)}
+        )
+    }
 
-  };
-
-  checked = (id, checked) => {
-    const { todos } = this.state
-    const newTodo = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, done: checked }
-      }
-      return todo;
-    })
-    this.setState({ todos: newTodo })
-  };
-
-  //点击删除按钮，删除其中一行
-  deleteById = (id) => {
-    const { todos } = this.state;
-    // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
-    const newTo = todos.filter((todo) => {
-      return todo.id !== id
-    })
-    this.setState({ todos: newTo })
-  }
-
-  //全选
-  choseAll = (done) => {
-    const { todos } = this.state
-
-    const newTo = todos.map((todo) => {
-      return { ...todo, done };
-
-    })
-    this.setState({ todos: [...newTo] })
-  }
-
-
-  //删除选中的内容
-  Alldelete = () => {
-    const { todos } = this.state;
-    // filter()方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
-    const newTo = todos.filter((todo) => {
-      return todo.done !== true
-    })
-    this.setState({ todos: newTo })
-  }
-  render() {
-    return (
-      <div className='todo-container'>
-        <div className='todo-wrap'>
-          <Header addTodo={this.addTodo} />
-          <List todos={this.state.todos} checked={this.checked} deleteById={this.deleteById} />
-          <Footer todos={this.state.todos} choseAll={this.choseAll} Alldelete={this.Alldelete} />
-        </div>
-      </div>
-    );
-  }
+    render(){
+        return (
+            <div >
+                <button onClick = {this.click}>点击我请求数据</button>
+                    
+            </div>
+        )
+    }
 }
 
-export default App
+export default App 
